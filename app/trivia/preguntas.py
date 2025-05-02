@@ -202,9 +202,13 @@ class MejorMediaPuntos(Trivia):
     """
 
     def __init__(self, parametros: OperacionesEurovision):
-        self._anyo_inicial = random.randint(1956, 2021)  # el máximo debe dejar espacio para un año final mayor
-        self._anyo_final = random.randint(self._anyo_inicial + 1, 2022)
 
+        self._anyo_inicial = parametros.anyo_aleatorio(1)[0]
+        cond_mayor = [{"$match": {"anyo": {"$gte": self._anyo_inicial}}}]
+        self._anyo_final = parametros.anyo_aleatorio(1, condiciones_extras=cond_mayor)[0]
+
+        print(self._anyo_inicial)
+        print(self._anyo_final)
         # Agregación para obtener la media de puntuación por país
         pipeline = [
             {"$match": {"anyo": {"$gte": self._anyo_inicial, "$lte": self._anyo_final}}},
